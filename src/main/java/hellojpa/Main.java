@@ -17,18 +17,26 @@ public class Main {
         tx.begin();
 
         try {
+            //팀 저장
             Team team = new Team();
             team.setName("팀");
             em.persist(team);
 
+            //회원 저장
             Member member = new Member();
             member.setName("안녕하세요");
             member.setAge(20);
-            member.setTeamId(team.getId());
+            member.setTeam(team);
             member.setMemberType(MemberType.USER);
-
             em.persist(member);
+
             tx.commit();
+
+            Member findMember = em.find(Member.class, member.getId());
+            String teamName = findMember.getTeam().getName();
+
+            System.out.println(teamName);
+
         } catch (Exception e) {
             tx.rollback();
         } finally {
