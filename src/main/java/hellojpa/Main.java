@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -38,7 +39,16 @@ public class Main {
             Team findTeam = findMember.getTeam();
             String teamName = findTeam.getName();
 
+
+
+            List<Member> members = findTeam.getMembers();
+            for (Member member1 : members) {
+                System.out.println("member1 = " + member1);
+            }
+
             System.out.println(teamName);
+
+
 
             tx.commit();
 
