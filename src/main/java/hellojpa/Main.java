@@ -30,12 +30,17 @@ public class Main {
             member.setMemberType(MemberType.USER);
             em.persist(member);
 
-            tx.commit();
+            em.flush();
+            em.clear();
 
+            //Lazy Fetch 확인
             Member findMember = em.find(Member.class, member.getId());
-            String teamName = findMember.getTeam().getName();
+            Team findTeam = findMember.getTeam();
+            String teamName = findTeam.getName();
 
             System.out.println(teamName);
+
+            tx.commit();
 
         } catch (Exception e) {
             tx.rollback();
