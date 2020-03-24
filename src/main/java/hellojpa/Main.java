@@ -1,6 +1,8 @@
 package hellojpa;
 
 import hellojpa.entity.Member;
+import hellojpa.entity.MemberType;
+import hellojpa.entity.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,14 +16,25 @@ public class Main {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        Member member = new Member();
-        member.setId(100L);
-        member.setName("안녕하세요");
+        try {
+            Team team = new Team();
+            team.setName("팀");
+            em.persist(team);
 
-        em.persist(member);
-        tx.commit();
+            Member member = new Member();
+            member.setName("안녕하세요");
+            member.setAge(20);
+            member.setTeamId(team.getId());
+            member.setMemberType(MemberType.USER);
 
-        em.close();
+            em.persist(member);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+
         emf.close();
     }
 }
