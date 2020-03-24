@@ -27,28 +27,30 @@ public class Main {
             Member member = new Member();
             member.setName("안녕하세요");
             member.setAge(20);
-            member.setTeam(team);
+//            member.setTeam(team);
             member.setMemberType(MemberType.USER);
+
+            team.getMembers().add(member); //무시됨 그러나 객체지향적 코드유지를 위해 작성을 권장.
+            member.setTeam(team);
+
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            //Lazy Fetch 확인
-            Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-            String teamName = findTeam.getName();
-
-
-
-            List<Member> members = findTeam.getMembers();
-            for (Member member1 : members) {
-                System.out.println("member1 = " + member1);
-            }
-
-            System.out.println(teamName);
-
-
+//            //Lazy Fetch 확인
+//            Member findMember = em.find(Member.class, member.getId());
+//            Team findTeam = findMember.getTeam();
+//            String teamName = findTeam.getName();
+//
+//
+//            //member 데이터 확인
+//            List<Member> members = findTeam.getMembers();
+//            for (Member member1 : members) {
+//                System.out.println("member1 = " + member1);
+//            }
+//
+//            System.out.println(teamName);
 
             tx.commit();
 
