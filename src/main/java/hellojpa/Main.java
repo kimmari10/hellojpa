@@ -27,30 +27,19 @@ public class Main {
             Member member = new Member();
             member.setName("안녕하세요");
             member.setAge(20);
-//            member.setTeam(team);
             member.setMemberType(MemberType.USER);
-
-            team.getMembers().add(member); //무시됨 그러나 객체지향적 코드유지를 위해 작성을 권장.
             member.setTeam(team);
-
+            team.getMembers().add(member); //무시됨 그러나 객체지향적 코드유지를 위해 작성을 권장.
             em.persist(member);
 
-            em.flush();
-            em.clear();
 
-//            //Lazy Fetch 확인
-//            Member findMember = em.find(Member.class, member.getId());
-//            Team findTeam = findMember.getTeam();
-//            String teamName = findTeam.getName();
-//
-//
-//            //member 데이터 확인
-//            List<Member> members = findTeam.getMembers();
-//            for (Member member1 : members) {
-//                System.out.println("member1 = " + member1);
-//            }
-//
-//            System.out.println(teamName);
+//            String jpql = "select m from Member m where m.name like '%hello%'";
+            String jpql = "select m from Member m  join fetch m.team"; // 지연 로딩 방지 fetch
+            List<Member> result = em.createQuery(jpql, Member.class)
+                    .setFirstResult(10)
+                    .setMaxResults(20)
+                    .getResultList();
+
 
             tx.commit();
 
